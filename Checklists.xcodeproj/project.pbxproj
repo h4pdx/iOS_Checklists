@@ -60,9 +60,9 @@
 			children = (
 				943571CD20950CAB00F3FE35 /* AppDelegate.swift */,
 				943571CF20950CAB00F3FE35 /* ChecklistViewController.swift */,
+				948A75D92097828F00BA2683 /* ItemDetailViewController.swift */,
 				9461B44B209676F000525FB1 /* ChecklistItem.swift */,
 				943571D120950CAB00F3FE35 /* Main.storyboard */,
-				948A75D92097828F00BA2683 /* ItemDetailViewController.swift */,
 				943571D420950CAD00F3FE35 /* Assets.xcassets */,
 				943571D620950CAD00F3FE35 /* LaunchScreen.storyboard */,
 				943571D920950CAD00F3FE35 /* Info.plist */,

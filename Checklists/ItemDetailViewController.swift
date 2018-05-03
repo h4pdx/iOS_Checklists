@@ -1,5 +1,5 @@
 //
-//  AddItemViewController.swift
+//  ItemDetailViewController.swift
 //  Checklists
 //
 //  Created by Ryan Hoover on 4/30/18.
@@ -8,13 +8,26 @@
 
 import UIKit
 
-class AddItemViewController: UITableViewController, UITextFieldDelegate {
+protocol ItemDetailViewControllerDelegate: class {
+    func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController)
+    func itemDetailViewController(_ controller: ItemDetailViewController, didFinishAdding item: ChecklistItem)
+    func itemDetailViewController(_ controller: ItemDetailViewController, didFinishEditing item: ChecklistItem)
+}
+
+class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var doneBarButton: UIBarButtonItem!
+    weak var delegate: ItemDetailViewControllerDelegate?
+    var itemToEdit: ChecklistItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
+        if let item = itemToEdit {
+            title = "Edit Item" // Change title
+            textField.text = item.text
+            doneBarButton.isEnabled = true // enable done button if we are editing
+        }
     }
     
     // ensure the single input field does not turn grey when tapped - looks funny
@@ -23,12 +36,21 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func cancel() {
-        navigationController?.popViewController(animated: true)
+        //navigationController?.popViewController(animated: true)
+        delegate?.itemDetailViewControllerDidCancel(self) // pass to ChecklistVC object
     }
     
+    // add or edit newly typed text
     @IBAction func done() {
-        print("Contents of text field: \(textField.text!)")
-        navigationController?.popViewController(animated: true)
+        if let item = itemToEdit {
+            item.text = textField.text!
+            delegate?.itemDetailViewController(self, didFinishEditing: item)
+        } else {
+            let item = ChecklistItem()
+            item.text = textField.text!
+            item.checked = false
+            delegate?.itemDetailViewController(self, didFinishAdding: item) // pass to ChecklistVC object
+        }
     }
     
     // ensure keyboard comes up right away
@@ -43,13 +65,7 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
         let oldText = textField.text!
         let stringRange = Range(range, in: oldText)! // convert from Obj-C NSRange object
         let newText = oldText.replacingCharacters(in: stringRange, with: string)
-        /*
-        if newText.isEmpty {
-            doneBarButton.isEnabled = false
-        } else {
-            doneBarButton.isEnabled = true
-        }
-        */
+
         doneBarButton.isEnabled = !newText.isEmpty
         return true
     }

@@ -10,14 +10,16 @@ import UIKit
 
 class ChecklistViewController: UITableViewController, ItemDetailViewControllerDelegate {
     
-    var items = [ChecklistItem]() // array of checklist items
+    var items = [ChecklistItem](); // array of checklist items
+    var checklist: Checklist!;
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad();
         // enable large titles
-        navigationController?.navigationBar.prefersLargeTitles = true
         // load items for documents folder
-        loadCheckListItems()
+        navigationItem.largeTitleDisplayMode = .never;
+        title = checklist.name; // pass necessary Chec,ist obj to VC when segue is performed
+        loadCheckListItems();
     }
 
     override func didReceiveMemoryWarning() {
@@ -94,7 +96,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         return items.count // number of items currently in data structure
     }
     
-    // updates full checklist line with new data
+    // make a table view cell using Prototype cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: indexPath) // updates
         let item = items[indexPath.row]

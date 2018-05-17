@@ -8,45 +8,48 @@
 
 import UIKit
 
-class AllListsViewController: UITableViewController, ListDetailViewControllerDelegate {
+class AllListsViewController: UITableViewController, ListDetailViewControllerDelegate, UINavigationControllerDelegate {
     
-    //var lists = [Checklist]();
-    //var lists = Array<Checklist>();
-    
-    var dataModel: DataModel!
+    var dataModel: DataModel! // List of Checklists lives in this class
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.prefersLargeTitles = true;
-        
-        //loadChecklists()
-        
-        //print("Documents folder = \(documentsDirectory())")
-        /*
-        var list = Checklist(name: "Birthdays");
-        lists.append(list);
-        
-        list = Checklist(name: "Groceries");
-        lists.append(list);
-        
-        list = Checklist(name: "Cool stuff");
-        lists.append(list);
-        
-        list = Checklist(name: "To Do");
-        lists.append(list);
-        
-        // add hardcoded data into lists
-        for list in lists {
-            let item = ChecklistItem()
-            item.text = "Item for \(list.name)"
-            list.items.append(item)
-        }
- */
-        
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    // Called whenever nav controller calls a new screen
+    // Called BEFORE viewDidAppear() and sets value back to -1, therefore not triggering a segue every time
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        //print("AllListsVC::navigationController()")
+        // Was back button tapped?
+        if viewController === self { // determine if newly activated VC is this class
+            // set the default to no value (-1)
+            //UserDefaults.standard.set(-1, forKey: "ChecklistIndex") // if we are in ALLLists, no checklist is currently selected
+            dataModel.indexOfSelectedChecklist = -1
+        }
+    }
+    
+    
+    // UKit calls this his method after the VC has become visible, both on boot and whenver control switches back
+    override func viewDidAppear(_ animated: Bool) {
+        //print("AllListsVC::viewDidAppear()")
+        super.viewDidAppear(animated)
+        
+        // waiting to register AllListsVC as Nav delegate HERE, instead of in navigationController(),
+        // so that the -1 will not overrite the sotred userdefault value before the last viewed list has a chance to load
+        navigationController?.delegate = self // make this VC the delegate for NavController
+        
+        // is really only performed once, on start up
+        //let index = UserDefaults.standard.integer(forKey: "ChecklistIndex") // check to see if we have to perform segue
+        let index = dataModel.indexOfSelectedChecklist // use getter
+        if index != -1 { // if -1 then user was on main screen, we dont have to load any checklists
+            let checklist = dataModel.lists[index] // load checklist object reference
+            performSegue(withIdentifier: "ShowChecklist", sender: checklist)
+        }
     }
     
 
@@ -72,6 +75,10 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
     
     // table view delegate envoked when you tap a row
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //UserDefaults.standard.set(indexPath.row, forKey: "ChecklistIndex") // set value of UserDefault checklist
+        dataModel.indexOfSelectedChecklist = indexPath.row // use setter
+        
         let checklist = dataModel.lists[indexPath.row];
         performSegue(withIdentifier: "ShowChecklist", sender: checklist);
     }

@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = window!.rootViewController as! UINavigationController
         let controller = navigationController.viewControllers[0] as! AllListsViewController
         controller.dataModel = dataModel
+        
         return true
     }
 
@@ -50,11 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func saveData() {
-        // force unwrap bc storyboard guarantees window is not nil
-        //let navigationController = window!.rootViewController as! UINavigationController
-        // vC[index 0] bc AllListsVC is embedded in nav controller
-        //let controller = navigationController.viewControllers[0] as! AllListsViewController
-        //controller.saveChecklists()
+        print("AppDelegate::saveData()")
         dataModel.saveChecklists()
     }
 

@@ -11,8 +11,18 @@ import Foundation
 class DataModel {
     var lists = [Checklist]()
     
+    var indexOfSelectedChecklist: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: "ChecklistIndex")
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "ChecklistIndex")
+        }
+    }
+    
     init() {
         loadChecklists()
+        registerDefaults()
     }
     
     
@@ -27,6 +37,7 @@ class DataModel {
     }
     
     func saveChecklists() {
+        //print("DataModel::saveCheckLists()")
         let encoder = PropertyListEncoder()
         do {
             let data = try encoder.encode(lists)
@@ -37,6 +48,7 @@ class DataModel {
     }
     
     func loadChecklists() {
+        //print("DataModel::loadCheckLists()")
         let path = dataFilePath() // get results of file path
         // try? returns nil if no object - alternative to do-catch blocks
         if let data = try? Data(contentsOf: path) { // try to load contents of Checklists.plists
@@ -48,6 +60,10 @@ class DataModel {
             }
         }
     }
-
+    
+    func registerDefaults() {
+        let dictionary = ["ChecklistIndex": -1]
+        UserDefaults.standard.register(defaults: dictionary)
+    }
     
 }

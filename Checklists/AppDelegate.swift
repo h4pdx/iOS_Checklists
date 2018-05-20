@@ -51,7 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func saveData() {
-        print("AppDelegate::saveData()")
+        //print("AppDelegate::saveData()")
+        //print("AppDelegate::saveData()::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
         dataModel.saveChecklists()
     }
 

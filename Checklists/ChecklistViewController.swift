@@ -63,7 +63,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // "AddItem" needs to be added to the segue identifier for this to work
         if (segue.identifier == "AddItem") { // specify the correct segue (could be more than one, depending on app)
-            // new controller to be displayed is sotred in segue.destination
+            // new controller to be displayed is stored in segue.destination
             let controller = segue.destination as! ItemDetailViewController // downcast UIViewController obj to AddViewVC object
             controller.delegate = self // sets AddItemVC's delegate property to ChecklistVC
         } else if segue.identifier == "EditItem" {
@@ -132,41 +132,6 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
             label.text = ""
         }
     }
-    
-    /*
-    // file:// URL
-    func documentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
-    }
-    
-    func dataFilePath() -> URL {
-        return documentsDirectory().appendingPathComponent("Checklists.plist")
-    }
-    
-    func saveChecklistItems() {
-        let encoder = PropertyListEncoder()
-        do {
-            let data = try encoder.encode(checklist.items)
-            try data.write(to: dataFilePath(), options: Data.WritingOptions.atomic)
-        } catch {
-            print("Error encoding item array.")
-        }
-    }
-    
-    func loadCheckListItems() {
-        let path = dataFilePath() // get results of file path
-        // try? returns nil if no object - alternative to do-catch blocks
-        if let data = try? Data(contentsOf: path) { // try to load contents of Checklists.plists
-            let decoder = PropertyListDecoder() // create decoder instance
-            do {
-                checklist.items = try decoder.decode([ChecklistItem].self, from: data) // load array of ChecklistItems into items array
-            } catch {
-                print("Error decoding item array.")
-            }
-        }
-    }
-    */
     
 }
 

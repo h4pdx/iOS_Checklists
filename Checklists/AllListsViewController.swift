@@ -29,7 +29,9 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
         if viewController === self { // determine if newly activated VC is this class
             // set the default to no value (-1)
             //UserDefaults.standard.set(-1, forKey: "ChecklistIndex") // if we are in ALLLists, no checklist is currently selected
+            //print("navCon::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
             dataModel.indexOfSelectedChecklist = -1
+            //print("navCon::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
         }
     }
     
@@ -38,7 +40,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
     override func viewDidAppear(_ animated: Bool) {
         //print("AllListsVC::viewDidAppear()")
         super.viewDidAppear(animated)
-        
+        //print("AllListsVC::viewDidAppear()")
         // waiting to register AllListsVC as Nav delegate HERE, instead of in navigationController(),
         // so that the -1 will not overrite the sotred userdefault value before the last viewed list has a chance to load
         navigationController?.delegate = self // make this VC the delegate for NavController
@@ -46,12 +48,18 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
         // is really only performed once, on start up
         //let index = UserDefaults.standard.integer(forKey: "ChecklistIndex") // check to see if we have to perform segue
         let index = dataModel.indexOfSelectedChecklist // use getter
-        if index != -1 { // if -1 then user was on main screen, we dont have to load any checklists
+        //print("viewDidAppear::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
+
+        if index >= 0 && index < dataModel.lists.count { // if -1 then user was on main screen, we dont have to load any checklists
             let checklist = dataModel.lists[index] // load checklist object reference
             performSegue(withIdentifier: "ShowChecklist", sender: checklist)
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
 
     // MARK:- Table data
 
@@ -67,9 +75,27 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
         let cell = makeCell(for: tableView);
         //cell.textLabel!.text = "List \(indexPath.row)";
         let checklist = dataModel.lists[indexPath.row];
-        cell.textLabel!.text = checklist.name;
-        cell.accessoryType = .detailDisclosureButton;
         
+        // we know that because of the subtitle style, the textLabel values will never be nil
+        // we COULD force unwrap and not worry, but maybe best practice is to always if-let unwrap
+        //cell.textLabel!.text = checklist.name;
+        if let label = cell.textLabel {
+            label.text = checklist.name
+        }
+        //cell.detailTextLabel!.text = "\(checklist.countUncheckedItems()) Items Remaining"
+        if let label = cell.detailTextLabel {
+            let count = checklist.countUncheckedItems()
+            if checklist.items.count == 0 {
+                label.text = "(No Items)"
+            } else if count == 0 {
+                label.text = "All Done!"
+            } else {
+                label.text = "\(checklist.countUncheckedItems()) Remaining"
+            }
+        }
+        cell.accessoryType = .detailDisclosureButton;
+        cell.imageView!.image = UIImage(named: checklist.iconName)
+        //print("tableView(_:cellForRowAt)")
         return cell;
     }
     
@@ -78,7 +104,8 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
         
         //UserDefaults.standard.set(indexPath.row, forKey: "ChecklistIndex") // set value of UserDefault checklist
         dataModel.indexOfSelectedChecklist = indexPath.row // use setter
-        
+        //print("tableView(didSelectRowAt)::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
+
         let checklist = dataModel.lists[indexPath.row];
         performSegue(withIdentifier: "ShowChecklist", sender: checklist);
     }
@@ -109,7 +136,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
         if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) {
             return cell;
         } else {
-            return UITableViewCell(style: .default, reuseIdentifier: cellIdentifier);
+            return UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier);
         }
     }
     
@@ -131,23 +158,53 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
     }
     
     func listDetailViewController(_ controller: ListDetailViewController, didFinishAdding checklist: Checklist) {
+        dataModel.lists.append(checklist)
+        dataModel.sortChecklists()
+        tableView.reloadData()
+        
+        /*
         let newRowIndex = dataModel.lists.count
         dataModel.lists.append(checklist)
         
         let indexPath = IndexPath(row: newRowIndex, section: 0)
         let indexPaths = [indexPath]
         tableView.insertRows(at: indexPaths, with: .automatic)
+        */
         
         navigationController?.popViewController(animated: true)
+        
+        //tableView(ListDetailViewController, didSelectRowAt: indexPath)
+        
+        performSegue(withIdentifier: "ShowChecklist", sender: checklist)
+        dataModel.indexOfSelectedChecklist = dataModel.lists.count
+        
+        
+        //print("listDetailVCdelegate::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
+        
+
+        /*
+        if newRowIndex >= 0 && newRowIndex < dataModel.lists.count { // if -1 then user was on main screen, we dont have to load any checklists
+            print("delegate::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
+            print("delegate::newRowIndex = \(newRowIndex)")
+            dataModel.indexOfSelectedChecklist = newRowIndex // always saves to disk as -1, unlike other functions
+            print("delegate::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
+            let checklist = dataModel.lists[newRowIndex] // load checklist object reference
+            performSegue(withIdentifier: "ShowChecklist", sender: checklist)
+        }
+        */
     }
     
     func listDetailViewController(_ controller: ListDetailViewController, didFinishEditing checklist: Checklist) {
+        /*
         if let index = dataModel.lists.index(of: checklist) { // find our checklist in the array of lists
             let indexPath = IndexPath(row: index, section: 0) // find cell in table view matching index in array
             if let cell = tableView.cellForRow(at: indexPath) { // grab the cell if it isnt nil
                 cell.textLabel!.text = checklist.name // update the name
             }
         }
+        */
+        dataModel.sortChecklists()
+        tableView.reloadData()
         navigationController?.popViewController(animated: true)
     }
 

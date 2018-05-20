@@ -12,7 +12,7 @@
         <!--Checklist-->
         <scene sceneID="RSe-Ha-bJ3">
             <objects>
-                <tableViewController id="LrV-2X-xdE" userLabel="Checklist" customClass="ChecklistViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ChecklistViewController" id="LrV-2X-xdE" userLabel="Checklist" customClass="ChecklistViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="1A0-hc-Sfq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -66,7 +66,7 @@
         <!--All Lists-->
         <scene sceneID="kyR-nn-c1x">
             <objects>
-                <tableViewController id="Q51-0H-ltz" userLabel="All Lists" customClass="AllListsViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="AllListsViewController" id="Q51-0H-ltz" userLabel="All Lists" customClass="AllListsViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="x7S-Ic-fzm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -132,7 +132,7 @@
                             <outlet property="delegate" destination="EpV-Q9-0kO" id="MQ5-vg-QyW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" largeTitleDisplayMode="never" id="bSE-5C-ugP">
+                    <navigationItem key="navigationItem" title="Add Checklist" largeTitleDisplayMode="never" id="bSE-5C-ugP">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="DxG-hd-FqD">
                             <color key="tintColor" red="1" green="0.12571682849999999" blue="0.1201214962" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
@@ -157,7 +157,7 @@
         <!--Add Item-->
         <scene sceneID="Rs4-lV-fpm">
             <objects>
-                <tableViewController id="t61-Ay-Ho7" customClass="ItemDetailViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ItemDetailViewController" id="t61-Ay-Ho7" customClass="ItemDetailViewController" customModule="Checklists" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="8Nu-Ab-fLX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -194,7 +194,7 @@
                             <outlet property="delegate" destination="t61-Ay-Ho7" id="9gn-Nl-8el"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Add Item" largeTitleDisplayMode="never" id="Gnt-SN-EoR" customClass="AddItem">
+                    <navigationItem key="navigationItem" title="Add Item" largeTitleDisplayMode="never" id="Gnt-SN-EoR">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="soU-dP-GsW">
                             <color key="tintColor" red="1" green="0.12571682849999999" blue="0.1201214962" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
@@ -236,7 +236,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="dRY-Cv-44h"/>
+        <segue reference="4x2-Uz-fpL"/>
         <segue reference="pDZ-mt-QbW"/>
     </inferredMetricsTieBreakers>
 </document>

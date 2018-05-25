@@ -126,6 +126,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     // update checkmark icon based on underlying data
     func configureCheckmark(for cell: UITableViewCell, with item: ChecklistItem) {
         let label = cell.viewWithTag(1001) as! UILabel
+        label.textColor = view.tintColor
         if (item.checked) {
             label.text = "✔︎"
         } else {

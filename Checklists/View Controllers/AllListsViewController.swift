@@ -162,35 +162,11 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
         dataModel.sortChecklists()
         tableView.reloadData()
         
-        /*
-        let newRowIndex = dataModel.lists.count
-        dataModel.lists.append(checklist)
-        
-        let indexPath = IndexPath(row: newRowIndex, section: 0)
-        let indexPaths = [indexPath]
-        tableView.insertRows(at: indexPaths, with: .automatic)
-        */
-        
         navigationController?.popViewController(animated: true)
         
-        //tableView(ListDetailViewController, didSelectRowAt: indexPath)
-        
+        /*
         performSegue(withIdentifier: "ShowChecklist", sender: checklist)
         dataModel.indexOfSelectedChecklist = dataModel.lists.count
-        
-        
-        //print("listDetailVCdelegate::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
-        
-
-        /*
-        if newRowIndex >= 0 && newRowIndex < dataModel.lists.count { // if -1 then user was on main screen, we dont have to load any checklists
-            print("delegate::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
-            print("delegate::newRowIndex = \(newRowIndex)")
-            dataModel.indexOfSelectedChecklist = newRowIndex // always saves to disk as -1, unlike other functions
-            print("delegate::dataModel.indexOfSelectedChecklist = \(dataModel.indexOfSelectedChecklist)")
-            let checklist = dataModel.lists[newRowIndex] // load checklist object reference
-            performSegue(withIdentifier: "ShowChecklist", sender: checklist)
-        }
         */
     }
     

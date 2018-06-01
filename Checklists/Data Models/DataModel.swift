@@ -90,4 +90,15 @@ class DataModel {
         lists.sort(by: {checklist1, checklist2 in return checklist1.name.localizedStandardCompare(checklist2.name) == .orderedAscending})
     }
     
+    class func nextChecklistItemID() -> Int {
+        let userDefaults = UserDefaults.standard // cals UserDefaults
+        let itemID = userDefaults.integer(forKey: "ChecklistItemID") //gets current ChecklistItemID from UD
+        userDefaults.set(itemID + 1, forKey: "ChecklistItemID") // adds 1 to ChecklistItemID and writes it back to UD
+        userDefaults.synchronize() // writes to disk
+        return itemID
+    }
+    
+    
+    
+    
 }

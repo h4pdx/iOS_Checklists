@@ -120,7 +120,8 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     // update table view label with data structure string
     func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
         let label = cell.viewWithTag(1000) as! UILabel
-        label.text = item.text
+        //label.text = item.text
+        label.text = "\(item.itemID): \(item.text)"
     }
     
     // update checkmark icon based on underlying data

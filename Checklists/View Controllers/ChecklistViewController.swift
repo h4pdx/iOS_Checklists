@@ -12,6 +12,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     
     //var items = [ChecklistItem](); // array of checklist items
     var checklist: Checklist!
+    //var dueDate: Date!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,6 +123,16 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         let label = cell.viewWithTag(1000) as! UILabel
         //label.text = item.text
         label.text = "\(item.itemID): \(item.text)"
+        /*
+        if let label = cell.detailTextLabel {
+            date = item.dueDate
+            let formatter = DateFormatter() // format Date object
+            formatter.dateStyle = .medium // give the date a style
+            formatter.timeStyle = .short //  give the time a seperate style
+            let dueDate = formatter.string(from: date) // convert to string for label
+            label.text = dueDate
+        }
+        */
     }
     
     // update checkmark icon based on underlying data

@@ -11,14 +11,14 @@ import UIKit
 class ChecklistViewController: UITableViewController, ItemDetailViewControllerDelegate {
     
     //var items = [ChecklistItem](); // array of checklist items
-    var checklist: Checklist!;
+    var checklist: Checklist!
     
     override func viewDidLoad() {
-        super.viewDidLoad();
+        super.viewDidLoad()
         // enable large titles
         // load items for documents folder
-        navigationItem.largeTitleDisplayMode = .never;
-        title = checklist.name; // pass necessary Chec,ist obj to VC when segue is performed
+        navigationItem.largeTitleDisplayMode = .never
+        title = checklist.name // pass necessary Checklist obj to VC when segue is performed
         //loadCheckListItems();
     }
 

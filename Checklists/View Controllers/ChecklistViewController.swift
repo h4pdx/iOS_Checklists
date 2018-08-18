@@ -12,7 +12,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     
     //var items = [ChecklistItem](); // array of checklist items
     var checklist: Checklist!
-    //var dueDate: Date!
+    var date: Date!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,23 +38,33 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     
     // implemented delgates for AddItemVC Protocol - done + add to list
     func itemDetailViewController(_ controller: ItemDetailViewController, didFinishAdding item: ChecklistItem) {
+        print("ChecklistVC::itemDetailVC(didFinishADDING)")
+
         let newRowIndex = checklist.items.count // get cell index
         checklist.items.append(item) // add new CheckListItem to array
+        //checklist.sortChecklistItems()
+        //tableView.reloadData()
         
         let indexPath = IndexPath(row: newRowIndex, section: 0) // no sections in the table view, all are sec 0
         let indexPaths = [indexPath] // needs to be an array to insert into tableview
         tableView.insertRows(at: indexPaths, with: .automatic) // update table with changes to data structure
+        checklist.sortChecklistItems() // insert into table, then sort & reload
+        tableView.reloadData()
+        
         navigationController?.popViewController(animated: true)
         //saveChecklistItems()
     }
     
     func itemDetailViewController(_ controller: ItemDetailViewController, didFinishEditing item: ChecklistItem) {
+        print("ChecklistVC::itemDetailVC(didFinishEDITING)")
         if let index = checklist.items.index(of: item) { // uses equality property of NSObject to match objects (could probably overload == instead)
             let indexPath = IndexPath(row: index, section: 0) // match with index path from table view
             if let cell = tableView.cellForRow(at: indexPath) { // grab the valid cell at our IndexPath
                 configureText(for: cell, with: item) // update text field with edited text
             }
         }
+        checklist.sortChecklistItems()
+        tableView.reloadData()
         navigationController?.popViewController(animated: true)
         //saveChecklistItems()
     }
@@ -122,27 +132,31 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
         let label = cell.viewWithTag(1000) as! UILabel
         //label.text = item.text
-        label.text = "\(item.itemID): \(item.text)"
-        /*
-        if let label = cell.detailTextLabel {
+        label.text = item.text
+        
+        if let label = cell.viewWithTag(1002) as? UILabel {
             date = item.dueDate
             let formatter = DateFormatter() // format Date object
             formatter.dateStyle = .medium // give the date a style
             formatter.timeStyle = .short //  give the time a seperate style
             let dueDate = formatter.string(from: date) // convert to string for label
-            label.text = dueDate
+            label.text = "Due: \(dueDate)"
         }
-        */
+        cell.imageView!.image = UIImage(named: "✔︎")
+
+        
     }
     
     // update checkmark icon based on underlying data
     func configureCheckmark(for cell: UITableViewCell, with item: ChecklistItem) {
-        let label = cell.viewWithTag(1001) as! UILabel
+        
+        if let label = cell.viewWithTag(1001) as? UILabel {
         label.textColor = view.tintColor
         if (item.checked) {
             label.text = "✔︎"
         } else {
             label.text = ""
+        }
         }
     }
     

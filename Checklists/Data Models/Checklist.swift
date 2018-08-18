@@ -30,5 +30,12 @@ class Checklist: NSObject, Codable {
         //print("Checklist::countUncheckedItems()")
         return items.reduce(0) {cnt, item in cnt + (item.checked ? 0 : 1)} // functional programming
     }
+    
+    func sortChecklistItems() {
+        print("checklist::sortChecklistItems()")
+        items.sort(by: {
+            item1, item2 in return item1.dueDate.compare(item2.dueDate) == .orderedAscending
+        })
+    }
 
 }
